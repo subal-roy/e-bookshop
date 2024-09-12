@@ -5,14 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\BookCategory;
 use App\Http\Requests\StoreBookCategoryRequest;
 use App\Http\Requests\UpdateBookCategoryRequest;
-use Exception;
-use PhpParser\Node\Stmt\TryCatch;
-
-use function PHPUnit\Framework\returnSelf;
+use App\Repositories\BookCategoryRepository;
 
 class BookCategoryController extends Controller
 {
 
+    public function __construct(private BookCategoryRepository $repository)
+    {
+        
+    }
     /**
      * Display a listing with pagination of the resource.
      */
@@ -55,11 +56,7 @@ class BookCategoryController extends Controller
      */
     public function show($id)
     {
-        $bookCategory = BookCategory::find($id);
-        if(!$bookCategory)
-            return apiResponseWithError('BookCategory not found.', 404);  
-        else 
-            return apiResponseWithSuccess('BookCategory retrieved successfully', $bookCategory);
+        return $this->repository->show($id);
     }
 
     /**
@@ -75,17 +72,7 @@ class BookCategoryController extends Controller
      */
     public function update(UpdateBookCategoryRequest $request, BookCategory $bookCategory)
     {
-        try {
-            if($bookCategory->update($request->validated()))
-                return apiResponseWithSuccess('BookCategory updated successfully', $bookCategory);
-        } catch (\Exception $e) {
-            if($e->getCode() == 23000){
-                return apiResponseWithError('This category name already exists', 500);
-            }
-            return apiResponseWithError('Failed to update' . $e->getMessage(), 500);
-        }
-        
-        return apiResponseWithError('Failed to update', 500);
+        return $this->repository->update($request, $bookCategory);
     }
 
     /**
@@ -93,18 +80,6 @@ class BookCategoryController extends Controller
      */
     public function destroy($id)
     {
-        $bookCategory = BookCategory::find($id);
-
-        if(!$bookCategory)
-            return apiResponseWithError('BookCategory not found', 404);
-        
-        try {
-            if($bookCategory->delete())
-                return apiResponseWithSuccess('BookCategory deleted successfully');
-        } catch (Exception $e) {
-            return apiResponseWithError('Failed to delete this BookCategory: ' . $e->getMessage());
-        }
-        
-        return apiResponseWithError('Failed to delete this BookCategory', 500);
+        return $this->repository->delete($id);
     }
 }
