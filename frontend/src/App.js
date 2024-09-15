@@ -1,11 +1,23 @@
-import './index.css';
+import React, { useState } from 'react'
+import './App.css';
+import Navbar from './Components/Navbar/Navbar';
+import { useEffect } from 'react';
 
-function App() {
+const App = () => {
+
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem('theme') || 'light';
+  });
+
+  useEffect(() => {
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+  
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <p className='text-3xl font-bold underline'>Hello from frontend</p>
+    <div className={`${theme === 'light' ? 'bg-white' : 'bg-black'}`}>
+      <Navbar theme={theme} setTheme={setTheme}/>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
