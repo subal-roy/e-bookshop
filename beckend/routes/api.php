@@ -11,6 +11,8 @@ Route::get('/user', function (Request $request) {
 
 // api for Authentication 
 Route::post('register', [AuthController::class, 'register']);
+Route::post('login', [AuthController::class, 'login']);
+
 
 Route::apiResource('book-categories', BookCategoryController::class);
 Route::get('book-category-list', [BookCategoryController::class, 'list']);
