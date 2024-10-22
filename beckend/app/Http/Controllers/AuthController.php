@@ -2,58 +2,37 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Repositories\AuthRepository;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+    public function __construct(private AuthRepository $repository) {}
     public function register(Request $request)
     {
-        $fields = $request->validate([
-            'name' => 'required|max:255',
-            'email' => 'required|email:rfc,dns|unique:users',
-            'password' => 'required|confirmed'
-        ]);
-
-        $user = User::create($fields);
-        $token = $user->createToken($request->name);
-
-        return [
-            'user' => $user,
-            'token' => $token->plainTextToken,
-        ];
+        return $this->repository->register($request);
     }
 
     public function login(Request $request)
     {
-        $request->validate([
-            'email' => 'required|exists:users',
-            'password' => 'required',
-        ]);
-
-        $user = User::where('email', $request->email)->first();
-        
-        if(!$user || !(Hash::check($request->password, $user->password))){
-            return [
-                'message' => 'Incorrect credentials! Please try again.'
-            ];
-        }
-
-        $token = $user->createToken($user->name);
-
-        return [
-            'user' => $user,
-            'token' => $token->plainTextToken,
-        ];
+        return $this->repository->login($request);
     }
 
-    public function logout(Request $request) 
+    public function logout(Request $request)
     {
         $request->user()->tokens()->delete();
 
         return [
             'message' => 'You are logged out'
         ];
+    }
+
+    public function sendResetPasswordLink(Request $request)
+    {
+        return $this->repository->sendResetPasswordLink($request);
+    }
+
+    public function resetPassword(Request $request) {
+        return $this->repository->resetPassword($request);
     }
 }
