@@ -15,6 +15,7 @@ Route::post('login', [AuthController::class, 'login']);
 Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 Route::post('reset-password-link', [AuthController::class, 'sendResetPasswordLink']);
 Route::post('reset-password', [AuthController::class, 'resetPassword']);
+Route::post('change-password', [AuthController::class, 'changePassword'])->middleware('auth:sanctum');
 
 
 

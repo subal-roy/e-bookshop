@@ -32,7 +32,12 @@ class AuthController extends Controller
         return $this->repository->sendResetPasswordLink($request);
     }
 
-    public function resetPassword(Request $request) {
+    public function resetPassword(Request $request)
+    {
         return $this->repository->resetPassword($request);
+    }
+
+    public function changePassword(Request $request) {
+        return $this->repository->changePassword($request);
     }
 }

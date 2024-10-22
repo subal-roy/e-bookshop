@@ -97,4 +97,23 @@ class AuthRepository implements Repository
             return apiResponseWithError('Invalid token or email.', 400);
         }
     }
+
+    public function changePassword(Request $request)
+    { 
+        $request->validate([
+            'old_password' => 'required',
+            'new_password' => 'required|confirmed'
+        ]);
+
+        $user = $request->user();
+
+        if (!$user || !(Hash::check($request->old_password, $user->password))) {
+            return apiResponseWithError('Please enter old password correctly.');
+        }
+
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+
+        return apiResponseWithSuccess('Password changed successfuly.');
+    }
 }
