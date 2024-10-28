@@ -1,24 +1,18 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Services;
 
 use App\Models\User;
 use App\Notifications\ResetPasswordNotification;
-use App\Repositories\Repository;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 
-class AuthRepository implements Repository
+class AuthService
 {
-    public function register(Request $request)
+    public function register($request)
     {
-        $fields = $request->validate([
-            'name' => 'required|max:255',
-            'email' => 'required|email:rfc,dns|unique:users',
-            'password' => 'required|confirmed'
-        ]);
+        $fields = $request->only('name','email', 'password');
 
         $user = User::create($fields);
         $token = $user->createToken($request->name);
@@ -29,13 +23,8 @@ class AuthRepository implements Repository
         ]);
     }
 
-    public function login(Request $request)
+    public function login($request)
     {
-        $request->validate([
-            'email' => 'required|exists:users',
-            'password' => 'required',
-        ]);
-
         $user = User::where('email', $request->email)->first();
 
         if (!$user || !(Hash::check($request->password, $user->password))) {
@@ -52,12 +41,8 @@ class AuthRepository implements Repository
         ]);
     }
 
-    public function sendResetPasswordLink(Request $request)
+    public function sendResetPasswordLink($request)
     {
-        $request->validate([
-            'email' => 'required|email'
-        ]);
-
         $user = User::where('email', $request->email)->first();
 
         if (!$user) {
@@ -73,14 +58,8 @@ class AuthRepository implements Repository
         return apiResponseWithSuccess('Password reset link is sent to your email.', ['token' => $token]);
     }
 
-    public function resetPassword(Request $request)
+    public function resetPassword($request)
     {
-        $request->validate([
-            'email' => 'required|email|exists:users',
-            'password' => 'required|confirmed',
-            'token' => 'required'
-        ]);
-
         $status = Password::reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
             function ($user, $password) {
@@ -92,19 +71,14 @@ class AuthRepository implements Repository
         );
 
         if ($status == Password::PASSWORD_RESET) {
-            return apiResponseWithSuccess('Password updated successfuylly.');
+            return apiResponseWithSuccess('Password updated successfully.');
         } else {
             return apiResponseWithError('Invalid token or email.', 400);
         }
     }
 
-    public function changePassword(Request $request)
+    public function changePassword($request)
     { 
-        $request->validate([
-            'old_password' => 'required',
-            'new_password' => 'required|confirmed'
-        ]);
-
         $user = $request->user();
 
         if (!$user || !(Hash::check($request->old_password, $user->password))) {

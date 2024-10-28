@@ -2,20 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\AuthRepository;
+use App\Services\AuthService;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
-    public function __construct(private AuthRepository $repository) {}
+    public function __construct(private AuthService $service) {}
     public function register(Request $request)
     {
-        return $this->repository->register($request);
+        return $this->service->register($request);
     }
 
     public function login(Request $request)
     {
-        return $this->repository->login($request);
+        return $this->service->login($request);
     }
 
     public function logout(Request $request)
@@ -29,15 +29,15 @@ class AuthController extends Controller
 
     public function sendResetPasswordLink(Request $request)
     {
-        return $this->repository->sendResetPasswordLink($request);
+        return $this->service->sendResetPasswordLink($request);
     }
 
     public function resetPassword(Request $request)
     {
-        return $this->repository->resetPassword($request);
+        return $this->service->resetPassword($request);
     }
 
     public function changePassword(Request $request) {
-        return $this->repository->changePassword($request);
+        return $this->service->changePassword($request);
     }
 }
