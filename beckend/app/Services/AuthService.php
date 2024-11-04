@@ -28,9 +28,8 @@ class AuthService
         $user = User::where('email', $request->email)->first();
 
         if (!$user || !(Hash::check($request->password, $user->password))) {
-            return [
-                'message' => 'Incorrect credentials! Please try again.'
-            ];
+
+            return apiResponseWithError('Incorrect credentials! Please try again.', 400);
         }
 
         $token = $user->createToken($user->name);
@@ -46,11 +45,9 @@ class AuthService
         $user = User::where('email', $request->email)->first();
 
         if (!$user) {
-            return [
-                'message' => 'User not found with this email',
-                'code' => 404
-            ];
+            return apiResponseWithError('User not found with this email', 404);
         }
+
         $token = Password::createToken($user);
 
         $user->notify(new ResetPasswordNotification($token));
@@ -70,11 +67,8 @@ class AuthService
             }
         );
 
-        if ($status == Password::PASSWORD_RESET) {
-            return apiResponseWithSuccess('Password updated successfully.');
-        } else {
-            return apiResponseWithError('Invalid token or email.', 400);
-        }
+        return $status == Password::PASSWORD_RESET ? apiResponseWithSuccess('Password updated successfully.')
+                                                   : apiResponseWithError('Invalid token or email.', 400);
     }
 
     public function changePassword($request)
@@ -82,7 +76,7 @@ class AuthService
         $user = $request->user();
 
         if (!$user || !(Hash::check($request->old_password, $user->password))) {
-            return apiResponseWithError('Please enter old password correctly.');
+            return apiResponseWithError('Please enter old password correctly.', 400);
         }
 
         $user->password = Hash::make($request->new_password);
