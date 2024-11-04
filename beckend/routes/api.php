@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookCategoryController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\VendorController;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/user', function (Request $request) {
@@ -21,3 +21,10 @@ Route::post('change-password', [AuthController::class, 'changePassword'])->middl
 
 Route::apiResource('book-categories', BookCategoryController::class);
 Route::get('book-category-list', [BookCategoryController::class, 'list']);
+
+Route::get('vendors', [VendorController::class, 'index']);
+Route::get('vendors/{vendor}', [VendorController::class, 'show']);
+Route::get('vendor-list', [VendorController::class, 'list']);
+Route::post('register-vendor', [VendorController::class, 'registerVendor'])->named('vendor.register');
+Route::put('vendors/{vendor}', [VendorController::class, 'update']);
+Route::delete('vendors/{vendor}', [VendorController::class, 'destroy']);
