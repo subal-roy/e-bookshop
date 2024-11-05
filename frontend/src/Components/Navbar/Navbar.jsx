@@ -52,9 +52,13 @@ const Navbar = ({ theme, setTheme }) => {
   ];
 
   return (
-    <div className={`py-1 ${theme === "light" ? "bg-white text-black" : "bg-gray-800 text-white"}`}>
+    <div
+      className={`w-3/4  m-auto py-1 ${
+        theme === "light" ? "text-black" : "text-white"
+      }`}
+    >
       <div
-        className={"flex items-center justify-between px-2 md:px-10 py-2 lg:px-20"}
+        className={"flex items-center justify-between md:px-10 py-2 lg:px-20"}
       >
         <img
           src={theme === "light" ? logo_light : logo_dark}
@@ -66,7 +70,7 @@ const Navbar = ({ theme, setTheme }) => {
           <input
             type="text"
             placeholder="search"
-            className="w-[150px] sm:w-[250px] lg:w-[500px] p-2 border bg-gray-100 border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+            className="w-[150px] md:w-[350px] p-2 border bg-gray-100 border-gray-300 rounded-md focus:outline-none focus:border-blue-500 text-gray-700"
           />
 
           <img
@@ -110,24 +114,26 @@ const Navbar = ({ theme, setTheme }) => {
           </div>
         )}
       </div>
-      <div className="hidden sm:block w-1/3 m-auto pt-2">
-        <ul className="flex items-center">
-          {navItems.map((item) => (
-            <li
-              key={item.label}
-              className="relative cursor-pointer px-5 text-xl hover:text-blue-500"
-              onMouseEnter={() => item.hasModal && setHoveredItem(item.label)}
-              onMouseLeave={() => setHoveredItem(null)}
-            >
-              <a href={item.link}>{item.label}</a>
+      <div className="flex justify-center">
+        <div className="hidden sm:block pt-2">
+          <ul className="flex items-center">
+            {navItems.map((item) => (
+              <li
+                key={item.label}
+                className="relative cursor-pointer px-5 text-xl hover:text-blue-500"
+                onMouseEnter={() => item.hasModal && setHoveredItem(item.label)}
+                onMouseLeave={() => setHoveredItem(null)}
+              >
+                <a href={item.link}>{item.label}</a>
 
-              {/* Conditionally render the modal on hover */}
-              {item.hasModal && hoveredItem === item.label && (
-                <DropdownModal theme={theme} items={item.modalItems} />
-              )}
-            </li>
-          ))}
-        </ul>
+                {/* Conditionally render the modal on hover */}
+                {item.hasModal && hoveredItem === item.label && (
+                  <DropdownModal theme={theme} items={item.modalItems} />
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </div>
   );
