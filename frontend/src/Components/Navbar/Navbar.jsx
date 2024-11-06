@@ -8,6 +8,7 @@ import toogle_icon_dark from "../../assets/day.png";
 import menu_open from "../../assets/menu_icon.png";
 import menu_close from "../../assets/menu_close_icon.png";
 import DropdownModal from "./DropdownModal";
+import { Link } from "react-router-dom";
 
 const Navbar = ({ theme, setTheme }) => {
   const [menu, setMenu] = useState(() => {
@@ -80,9 +81,9 @@ const Navbar = ({ theme, setTheme }) => {
           />
         </div>
         <div className="flex items-center">
-          <a href="/profile" className="pr-5">
-            Subal Roy
-          </a>
+          <Link to="/login" className="pr-5">
+            Login
+          </Link>
           <img
             onClick={() => {
               toggle_mode();
