@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
+import { login } from "../../api/auth";
+import { validateLoginForm } from "../../utils/validation";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -11,13 +13,6 @@ const Login = () => {
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
-  const validate = () => {
-    const errors = {};
-    if (!formData.email) errors.email = "Please enter email";
-    if (!formData.password) errors.password = "Please enter passoword";
-    return errors;
-  };
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -25,50 +20,15 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formErrors = validate();
+    const formErrors = validateLoginForm(formData);
     setErrors(formErrors);
 
     if (Object.keys(formErrors).length === 0) {
-      try {
-        const response = await fetch("http://127.0.0.1:8000/api/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-          body: JSON.stringify({
-            email: formData.email,
-            password: formData.password,
-          }),
-        });
-
-        console.log(response);
-        const contentType = response.headers.get("content-type");
-
-        if (contentType && contentType.includes("application/json")) {
-          const responseData = await response.json();
-          console.log(responseData);
-
-          if (response.ok) {
-            navigate("/");
-          } else {
-            setErrors(
-              responseData.errors || {
-                general:
-                  responseData.message || "An error occured. Please try again.",
-              }
-            );
-          }
-        } else {
-          const errorText = await response.text();
-          console.error("Expected JSON, received HTML:", errorText);
-          setErrors({
-            general: "An unexpected error occurred. Please try again.",
-          });
-        }
-      } catch (error) {
-        console.error(error);
-        setErrors({ general: "Network error, please try again later." });
+      const response = await login(formData);
+      if (response.success) {
+        navigate("/");
+      } else {
+        setErrors(response.errors);
       }
     }
   };

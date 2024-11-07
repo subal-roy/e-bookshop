@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, {useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
+import { validateSignUpForm } from "../../utils/validation";
+import { register } from "../../api/auth";
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -18,66 +20,18 @@ const SignUp = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const validate = () => {
-    const errors = {};
-    if (!formData.name) errors.name = "Name is Required";
-    if (!formData.email) errors.email = "Email is Required";
-    if (!formData.password) errors.password = "Password is Required";
-    if (formData.password !== formData.confirmPassword) {
-      errors.confirmPassword = "Passwords do not match";
-    }
-    return errors;
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formErrors = validate();
+    const formErrors = validateSignUpForm(formData);
     setErrors(formErrors);
 
     if (Object.keys(formErrors).length === 0) {
-      try {
-        const response = await fetch("http://127.0.0.1:8000/api/register", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-          },
-          body: JSON.stringify({
-            name: formData.name,
-            email: formData.email,
-            password: formData.password,
-            password_confirmation: formData.confirmPassword,
-          }),
-        });
-        console.log(response);
-        const contentType = response.headers.get("content-type");
-        
-        if (contentType && contentType.includes("application/json")) {
-          const responseData = await response.json();
-          console.log(responseData);
-
-          if (response.ok) {
-            alert("You have registered successfully!! Please login.")
-            navigate("/login")
-          } else {
-            setErrors(
-              responseData.errors || {
-                general:
-                  responseData.message ||
-                  "An error occurred. Please try again.",
-              }
-            );
-          }
-        } else {
-          const errorText = await response.text();
-          console.error("Expected JSON, received HTML:", errorText);
-          setErrors({
-            general: "An unexpected error occurred. Please try again.",
-          });
-        }
-      } catch (error) {
-        console.error(error);
-        setErrors({ general: "Network error, please try again later." });
+      const response = await register(formData);
+      if(response.success){
+        alert("congratulations!!You have registered successfully.")
+        navigate("/login");
+      }else{
+        setErrors(response.errors);
       }
     }
   };

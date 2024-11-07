@@ -5,8 +5,8 @@ import { useEffect } from "react";
 import SlideShow from "./Components/SlideShow";
 import CategoryContainer from "./Components/CategoryContainer/CategoryContainer";
 import {Routes, BrowserRouter as Router, Route} from 'react-router-dom';
-import SignUp from "./Components/SignUp";
-import Login from "./Components/Login";
+import SignUp from "./Components/Auth/SignUp";
+import Login from "./Components/Auth/Login";
 
 const App = () => {
   const [theme, setTheme] = useState(() => {
