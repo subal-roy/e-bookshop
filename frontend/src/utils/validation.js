@@ -15,3 +15,18 @@ export const validateSignUpForm = (formData) => {
   }
   return errors;
 };
+
+export const validateForgetPasswordForm = (formData) => {
+  const errors = {};
+  if (!formData.email) errors.email = "Please enter email";
+  return errors;
+};
+
+export const validateNewPasswordForm = (formData) => { 
+  const errors = {};
+  if (!formData.password) errors.password = "Please is required";
+  if (formData.password !== formData.confirmPassword) { 
+    errors.confirmPassword = "Passwords do not match"
+  }
+  return errors;
+};

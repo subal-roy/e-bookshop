@@ -54,7 +54,7 @@ const SignUp = () => {
               className="w-full border rounded-sm p-2"
               placeholder="Enter your name"
             />
-            {errors.name && (
+            {errors.name && (+
               <p className="text-red-500 text-sm">{errors.name}</p>
             )}
           </div>

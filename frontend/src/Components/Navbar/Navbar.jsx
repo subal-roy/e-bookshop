@@ -9,6 +9,8 @@ import menu_open from "../../assets/menu_icon.png";
 import menu_close from "../../assets/menu_close_icon.png";
 import DropdownModal from "./DropdownModal";
 import { Link } from "react-router-dom";
+import { useUser } from "../../contexts/UserContext";
+import { IoMdArrowDropdown } from "react-icons/io";
 
 const Navbar = ({ theme, setTheme }) => {
   const [menu, setMenu] = useState(() => {
@@ -16,6 +18,9 @@ const Navbar = ({ theme, setTheme }) => {
   });
 
   const [hoveredItem, setHoveredItem] = useState(null);
+
+  const { user, signout } = useUser();
+  const [showLogout, setShowLogout] = useState(false);
 
   useEffect(() => {
     localStorage.setItem("menu", menu);
@@ -80,10 +85,37 @@ const Navbar = ({ theme, setTheme }) => {
             className="w-5 h-5 cursor-pointer mx-[-25px]"
           />
         </div>
-        <div className="flex items-center">
-          <Link to="/login" className="pr-5">
-            Login
-          </Link>
+        <div className="flex items-center gap-4">
+          {user ? (
+            <div className="relative flex flex-col items-center">
+              <div className="flex flex-row items-center">
+                <p>{user.name}</p>
+                <IoMdArrowDropdown
+                  onClick={() => setShowLogout(!showLogout)}
+                  className="curson-pointer"
+                />
+                {showLogout && (
+                  <div
+                    className={`absolute top-full right-0 bg-white dark:bg-gray-800 z-10 border border-gray-300 dark:border-gray-700 mt-2 flex flex-col shadow-lg`}
+                  >
+                    <Link to="/profile">
+                      <button className="px-4 py-1 w-full text-left text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                        Profile
+                      </button>
+                    </Link>
+                    <button
+                      onClick={signout}
+                      className="px-4 py-1 text-left text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                    >
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+          ) : (
+            <Link to="/login">Login</Link>
+          )}
           <img
             onClick={() => {
               toggle_mode();

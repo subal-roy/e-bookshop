@@ -3,6 +3,8 @@ import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../../api/auth";
 import { validateLoginForm } from "../../utils/validation";
+import { useUser } from "../../contexts/UserContext";
+
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -12,6 +14,7 @@ const Login = () => {
 
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
+  const {signin} = useUser();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -26,6 +29,8 @@ const Login = () => {
     if (Object.keys(formErrors).length === 0) {
       const response = await login(formData);
       if (response.success) {
+        console.log(response.data.data.user);
+        signin(response.data.data.user);
         navigate("/");
       } else {
         setErrors(response.errors);
@@ -35,7 +40,7 @@ const Login = () => {
 
   return (
     <div className="bg-gray-100 h-screen flex items-center justify-center">
-      <div className="bg-white h-[480px] p-6 rounded-md shadow-md w-full max-w-md">
+      <div className="bg-white p-6 rounded-md shadow-md w-full max-w-md">
         <p className="text-2xl text-center">Login</p>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -75,6 +80,7 @@ const Login = () => {
               {errors.general}
             </div>
           )}
+          <Link to="/forget-password" className="text-blue-500">Forget Password?</Link>
           <button
             type="submit"
             className="w-full bg-blue-500 p-2 text-white rounded-md hover:bg-blue-400"
