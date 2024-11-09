@@ -36,6 +36,8 @@ const SignUp = () => {
     }
   };
 
+  const inputStyle = "w-full border border-gray-400 rounded-sm p-2";
+
   return (
     <div className="bg-gray-100 h-screen flex items-center justify-center">
       <div className="bg-white p-6 rounded-md shadow-md w-full max-w-md">
@@ -51,7 +53,7 @@ const SignUp = () => {
               name="name"
               value={formData.name}
               onChange={handleChange}
-              className="w-full border rounded-sm p-2"
+              className={inputStyle}
               placeholder="Enter your name"
             />
             {errors.name && (+
@@ -68,7 +70,7 @@ const SignUp = () => {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className="w-full border rounded-sm p-2"
+              className={inputStyle}
               placeholder="Enter your email"
             />
             {errors.email && (
@@ -85,7 +87,7 @@ const SignUp = () => {
               name="password"
               value={formData.password}
               onChange={handleChange}
-              className="w-full border rounded-sm p-2"
+              className={inputStyle}
               placeholder="Enter a password"
             />
             {errors.password && (
@@ -102,7 +104,7 @@ const SignUp = () => {
               name="confirmPassword"
               value={formData.confirmPassword}
               onChange={handleChange}
-              className="w-full border rounded-sm p-2"
+              className={inputStyle}
               placeholder="Confirm password"
             />
             {errors.confirmPassword && (
@@ -124,7 +126,7 @@ const SignUp = () => {
           <p className="text-center">OR</p>
           <button
             type="submit"
-            className="w-full p-2 border rounded-md hover:bg-gray-100"
+            className={inputStyle}
           >
             <div className="flex items-center justify-center">
               <FcGoogle size={20} />

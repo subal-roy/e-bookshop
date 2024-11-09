@@ -46,7 +46,7 @@ const ForgetPassord = () => {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className="w-full border rounded-sm p-2"
+              className="w-full border border-gray-400 rounded-sm p-2"
               placeholder="Enter your email"
             />
             {errors.email && (

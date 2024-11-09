@@ -26,6 +26,7 @@ const ResetPassword = () => {
       alert("Invalid reset link");
       navigate("/login"); 
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.search]);
   
   const handleChange = (e) => {
@@ -64,7 +65,7 @@ const ResetPassword = () => {
               name="password"
               value={formData.password}
               onChange={handleChange}
-              className="w-full border rounded-sm p-2"
+              className="w-full border border-gray-400 rounded-sm p-2"
               placeholder="Enter a password"
             />
             {errors.password && (
@@ -81,7 +82,7 @@ const ResetPassword = () => {
               name="confirmPassword"
               value={formData.confirmPassword}
               onChange={handleChange}
-              className="w-full border rounded-sm p-2"
+              className="w-full border border-gray-400 rounded-sm p-2"
               placeholder="Confirm password"
             />
             {errors.confirmPassword && (
