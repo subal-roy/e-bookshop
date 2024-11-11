@@ -78,9 +78,9 @@ const CategoryContainer = () => {
             <SwiperSlide key={i}>
               <div className="grid grid-cols-4 gap-5">
                 {/* For each slide, display four categories */}
-                {categories.slice(i * 4, i * 4 + 4).map((category) => (
+                {categories.slice(i * 4, i * 4 + 4).map((category,index) => (
                   <div
-                    key={category.name}
+                    key={index}
                     className="border p-4 rounded-md shadow-md bg-white"
                   >
                     <h2 className="text-lg font-bold mb-3">{category.name}</h2>

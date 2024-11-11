@@ -11,6 +11,18 @@ import DropdownModal from "./DropdownModal";
 import { Link } from "react-router-dom";
 import { useUser } from "../../contexts/UserContext";
 import { IoMdArrowDropdown } from "react-icons/io";
+import { getAllBookCategory } from "../../api/bookCategory";
+
+const fetchCategories = async () => {
+  try {
+    const response = await getAllBookCategory();
+    const categoryNames =  response.data.map(item => item.name);
+    return categoryNames;
+  } catch (error) {
+    console.error("Failed to fetch categories:", error);
+    return []; 
+  }
+};
 
 const Navbar = ({ theme, setTheme }) => {
   const [menu, setMenu] = useState(() => {
@@ -18,6 +30,7 @@ const Navbar = ({ theme, setTheme }) => {
   });
 
   const [hoveredItem, setHoveredItem] = useState(null);
+  const [categories, setCategories] = useState(null);
 
   const { user, signout } = useUser();
   const [showLogout, setShowLogout] = useState(false);
@@ -25,6 +38,14 @@ const Navbar = ({ theme, setTheme }) => {
   useEffect(() => {
     localStorage.setItem("menu", menu);
   }, [menu]);
+
+  useEffect(() => {
+    const loadCategories = async () => {
+      const fetchedCategories = await fetchCategories();
+      setCategories(fetchedCategories);
+    };
+    loadCategories();
+  }, []);
 
   const toggle_mode = () => {
     theme === "light" ? setTheme("dark") : setTheme("light");
@@ -36,16 +57,7 @@ const Navbar = ({ theme, setTheme }) => {
       label: "Categories",
       link: "/categories",
       hasModal: true,
-      modalItems: [
-        "Fiction",
-        "Non-Fiction",
-        "Science",
-        "Technology",
-        "Arts",
-        "Novel",
-        "Short Story",
-        "For Children",
-      ],
+      modalItems: categories,
     },
     {
       label: "Writers",
