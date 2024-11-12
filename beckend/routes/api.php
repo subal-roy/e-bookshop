@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookCategoryController;
+use App\Http\Controllers\BookController;
 use App\Http\Controllers\VendorController;
 use Illuminate\Support\Facades\Route;
 
@@ -28,3 +29,5 @@ Route::get('vendor-list', [VendorController::class, 'list']);
 Route::post('register-vendor', [VendorController::class, 'registerVendor'])->named('vendor.register');
 Route::put('vendors/{vendor}', [VendorController::class, 'update']);
 Route::delete('vendors/{vendor}', [VendorController::class, 'destroy']);
+
+Route::apiResource('book', BookController::class);
