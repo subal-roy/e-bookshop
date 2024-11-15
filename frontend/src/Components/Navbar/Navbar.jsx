@@ -8,7 +8,7 @@ import toogle_icon_dark from "../../assets/day.png";
 import menu_open from "../../assets/menu_icon.png";
 import menu_close from "../../assets/menu_close_icon.png";
 import DropdownModal from "./DropdownModal";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useUser } from "../../contexts/UserContext";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { getAllBookCategory } from "../../api/bookCategory";
@@ -16,11 +16,11 @@ import { getAllBookCategory } from "../../api/bookCategory";
 const fetchCategories = async () => {
   try {
     const response = await getAllBookCategory();
-    const categoryNames =  response.data.map(item => item.name);
+    const categoryNames = response.data.map((item) => item.name);
     return categoryNames;
   } catch (error) {
     console.error("Failed to fetch categories:", error);
-    return []; 
+    return [];
   }
 };
 
@@ -34,6 +34,9 @@ const Navbar = ({ theme, setTheme }) => {
 
   const { user, signout } = useUser();
   const [showLogout, setShowLogout] = useState(false);
+
+  const [searchText, setSearchText] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     localStorage.setItem("menu", menu);
@@ -49,6 +52,12 @@ const Navbar = ({ theme, setTheme }) => {
 
   const toggle_mode = () => {
     theme === "light" ? setTheme("dark") : setTheme("light");
+  };
+
+  const handleSearch = () => {
+    if (searchText && searchText.trim()) {
+      navigate(`/search?term=${encodeURIComponent(searchText.trim())}`);
+    }
   };
 
   const navItems = [
@@ -88,14 +97,19 @@ const Navbar = ({ theme, setTheme }) => {
           <input
             type="text"
             placeholder="search"
+            required
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
             className="w-[150px] md:w-[350px] p-2 border bg-gray-100 border-gray-300 rounded-md focus:outline-none focus:border-blue-500 text-gray-700"
           />
 
-          <img
-            src={search_icon_light}
-            alt=""
-            className="w-5 h-5 cursor-pointer mx-[-25px]"
-          />
+          <button
+            className="mx-[-25px] cursor-pointer"
+            onClick={handleSearch}
+            disabled={!(searchText && searchText.trim())}
+          >
+            <img src={search_icon_light} alt="" className="w-5 h-5" />
+          </button>
         </div>
         <div className="flex items-center gap-4">
           {user ? (
@@ -104,7 +118,7 @@ const Navbar = ({ theme, setTheme }) => {
                 <p>{user.name}</p>
                 <IoMdArrowDropdown
                   onClick={() => setShowLogout(!showLogout)}
-                  className="curson-pointer"
+                  className="cursor-pointer"
                 />
                 {showLogout && (
                   <div
@@ -115,6 +129,7 @@ const Navbar = ({ theme, setTheme }) => {
                         Profile
                       </button>
                     </Link>
+                    <hr />
                     <button
                       onClick={signout}
                       className="px-4 py-1 text-left text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"

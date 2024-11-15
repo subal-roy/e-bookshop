@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import "./App.css";
-import Navbar from "./Components/Navbar/Navbar";
 import { useEffect } from "react";
 import SlideShow from "./Components/SlideShow";
 import CategoryContainer from "./Components/CategoryContainer/CategoryContainer";
@@ -9,6 +8,9 @@ import SignUp from "./Components/Auth/SignUp";
 import Login from "./Components/Auth/Login";
 import ForgetPassord from "./Components/Auth/ForgetPassord";
 import ResetPassword from "./Components/Auth/ResetPassword";
+import TrendingBooks from "./Components/TrendingBooks";
+import Search from "./Components/Search/Search";
+import MainLayout from "./Components/Layout/MainLayout";
 
 const App = () => {
   const [theme, setTheme] = useState(() => {
@@ -26,21 +28,23 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<SignUp />} />
           <Route path="/forget-password" element={<ForgetPassord />} />
-          <Route path="/reset-password" element={<ResetPassword />}/>
+          <Route path="/reset-password" element={<ResetPassword />} />
           <Route
             path="/"
             element={
-              <>
-                <Navbar theme={theme} setTheme={setTheme} />
-                <div
-                  className={`${
-                    theme === "light" ? "bg-gray-100" : "bg-black"
-                  }`}
-                >
-                  <SlideShow />
-                  <CategoryContainer />
-                </div>
-              </>
+              <MainLayout theme={theme} setTheme={setTheme}>
+                <SlideShow />
+                <CategoryContainer />
+                <TrendingBooks />
+              </MainLayout>
+            }
+          />
+          <Route
+            path="/search"
+            element={
+              <MainLayout theme={theme} setTheme={setTheme}>
+                <Search />
+              </MainLayout>
             }
           />
         </Routes>

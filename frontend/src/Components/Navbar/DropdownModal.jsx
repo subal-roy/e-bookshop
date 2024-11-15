@@ -8,7 +8,7 @@ const DropdownModal = ({ theme, items }) => {
       } shadow-lg rounded-md z-10`}
     >
       <div className="grid grid-cols-4 text-center pt-5">
-        {items.map((item, index) => (
+        {items&&items.map((item, index) => (
           <p key={index} className="cursor-pointer py-3 hover:text-blue-500">
             {item}
           </p>
