@@ -11,6 +11,7 @@ import ResetPassword from "./Components/Auth/ResetPassword";
 import TrendingBooks from "./Components/TrendingBooks";
 import Search from "./Components/Search/Search";
 import MainLayout from "./Components/Layout/MainLayout";
+import BookDetails from "./Components/BookDetails/BookDetails";
 
 const App = () => {
   const [theme, setTheme] = useState(() => {
@@ -47,6 +48,14 @@ const App = () => {
               </MainLayout>
             }
           />
+          <Route 
+            path="/book/:bookId"
+            element={
+              <MainLayout theme={theme} setTheme={setTheme}>
+                <BookDetails/>
+              </MainLayout>
+            }
+            />
         </Routes>
       </Router>
     </div>

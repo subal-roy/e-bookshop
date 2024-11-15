@@ -17,9 +17,9 @@ const Book = ({ book }) => {
         <button className="bg-blue-500 text-white p-2 w-3/4 absolute top-1/2 rounded-sm opacity-0 hover:bg-blue-400 group-hover:opacity-100">
           Add to cart
         </button>
-        <button className="text-blue-500 font-semibold bg-gray-100 p-2 w-full absolute bottom-0 opacity-0 hover:bg-gray-50 group-hover:opacity-100">
+        <a href={`/book/${book.id}`} className="text-center text-blue-500 font-semibold bg-gray-100 p-2 w-full absolute bottom-0 opacity-0 hover:bg-gray-50 group-hover:opacity-100">
           View details
-        </button>
+        </a>
       </div>
     </div>
   );
