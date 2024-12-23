@@ -29,9 +29,9 @@ class BookCategoryController extends Controller
      */
     public function list()
     {
-        $bookCategories = BookCategory::all();
+        $bookCategoryList = BookCategory::select('id', 'name')->get();
 
-        return apiResponseWithSuccess('BookCategory list retrived successfully', $bookCategories);
+        return apiResponseWithSuccess('BookCategory list retrived successfully', $bookCategoryList);
     }
     /**
      * Show the form for creating a new resource.

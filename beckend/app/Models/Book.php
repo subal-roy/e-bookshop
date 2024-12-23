@@ -17,4 +17,9 @@ class Book extends Model
         'format',
         'page_count'
     ];
+
+    public function category()
+    {
+        return $this->belongsTo(BookCategory::class, 'book_category_id');
+    }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreBookRequest;
+use App\Http\Requests\BookRequest;
 use App\Models\Book;
 use App\Repositories\BookRepository;
 use Illuminate\Http\Request;
@@ -13,23 +13,16 @@ class BookController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        $books = $this->repository->paginate($request);
+        return apiResponseWithSuccess("Book data retrieved successfully", $books);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreBookRequest $request)
+    public function store(BookRequest $request)
     {
         return $this->repository->save($request);
     }

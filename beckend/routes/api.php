@@ -30,4 +30,4 @@ Route::post('register-vendor', [VendorController::class, 'registerVendor'])->nam
 Route::put('vendors/{vendor}', [VendorController::class, 'update']);
 Route::delete('vendors/{vendor}', [VendorController::class, 'destroy']);
 
-Route::apiResource('book', BookController::class);
+Route::apiResource('books', BookController::class);
