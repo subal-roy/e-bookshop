@@ -21,6 +21,7 @@ const books = [
 const Products = () => {
   return (
     <div className="w-3/4 bg-white m-5 p-2 rounded-md shadow-md">
+      <span>Search results <br /> (Showing 15 of 50 items)</span>
       <div className="grid grid-cols-1 gap-5 md:grid-cols-3 xl:grid-cols-5">
         {books.map((book) => (
           <Book book={book}/>

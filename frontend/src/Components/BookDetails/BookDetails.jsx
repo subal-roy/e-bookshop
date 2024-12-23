@@ -54,7 +54,7 @@ const BookDetails = () => {
               <span className="font-semibold text-xl">Tk. 150</span>
               <span className="text-green-500">You can save Tk. 50(25%)</span>
             </div>
-            <div className="flex gap-5 bg-gray-100 border p-3 mt-3 items-center">
+            <div className="flex justify-between bg-gray-100 border p-3 mt-3 items-center">
               <img src={book} alt="#" className="h-12 w-8" />
               <div className="flex flex-col">
                 <span className="text-gray-600">Get eBook Version</span>
@@ -103,9 +103,9 @@ const BookDetails = () => {
             </div>
             <div className="mt-5 flex gap-5">
               <button className="p-3 text-blue-500 border border-blue-500 rounded-sm hover:text-white hover:bg-blue-500">
-                Read a portion
+                Read a part
               </button>
-              <button className="py-3 px-7 text-blue-500 bg-blue-500 text-white rounded-sm hover:bg-blue-400">
+              <button className="py-3 px-7 bg-blue-500 text-white rounded-sm hover:bg-blue-400">
                 Add to Cart
               </button>
             </div>
