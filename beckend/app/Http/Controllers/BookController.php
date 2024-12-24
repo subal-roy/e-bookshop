@@ -30,9 +30,10 @@ class BookController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Book $book)
+    public function show(String $slug)
     {
-        //
+        $book = Book::where('slug', $slug)->firstOrFail();
+        return apiResponseWithSuccess('Data retrived successfully', $book);
     }
 
     /**
